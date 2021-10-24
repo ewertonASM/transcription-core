@@ -49,7 +49,7 @@ After installing all the prerequisites, at the root of the project, install it b
 sudo make install
 ```
 
-To test the installation, simply start the Translation Core with the following command:
+To test the installation, simply start the Transcription Core with the following command:
 
 ```sh
 make dev start
