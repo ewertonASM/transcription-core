@@ -97,32 +97,6 @@ class Worker:
 
         for f in os.listdir(tmp_dir):
             os.remove(os.path.join(tmp_dir, f))
-    
-
-    def __process_message(self, channel, method, properties, body):
-
-        try:
-
-            self.__logger.info("Processing a new translation request.")
-            payload = json.loads(body)
-            gloss = self.__translate(payload.get("text", ""))
-
-            self.__reply_message(
-                route=properties.reply_to,
-                message=json.dumps({"translation": gloss}),
-                id=properties.correlation_id)
-
-        except Exception as ex:
-            exceptionhandler.handle_exception(ex)
-
-            self.__reply_message(
-                route=properties.reply_to,
-                message=json.dumps({"error": "Translator internal error."}),
-                id=properties.correlation_id)
-
-        finally:
-            if channel.is_open:
-                channel.basic_ack(delivery_tag=method.delivery_tag)
 
     def start(self, queue):
         self.__logger.debug("Starting queue consumer.")
